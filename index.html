@@ -4,99 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Rekomendasi Produk Shopee</title>
-    <style>
-      body {
-        font-family: "Segoe UI", sans-serif;
-        background-color: #fff;
-        color: #333;
-        margin: 0;
-        padding: 0;
-      }
-
-      header {
-        background-color: #f53d2d;
-        color: white;
-        padding: 1rem;
-        text-align: center;
-      }
-
-      .container {
-        max-width: 900px;
-        margin: 2rem auto;
-        padding: 1rem;
-      }
-
-      /* Tabs styles */
-      .tabs {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1.5rem;
-        border-bottom: 2px solid #eee;
-      }
-
-      .tab {
-        padding: 0.5rem 1.5rem;
-        cursor: pointer;
-        border: none;
-        background: none;
-        font-size: 1rem;
-        color: #666;
-        border-bottom: 3px solid transparent;
-        transition: color 0.3s, border-bottom-color 0.3s;
-      }
-
-      .tab:hover {
-        color: #f53d2d;
-      }
-
-      .tab.active {
-        color: #f53d2d;
-        border-bottom-color: #f53d2d;
-        font-weight: bold;
-      }
-
-      .product-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .product-card {
-        border: 1px solid #eee;
-        border-radius: 10px;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        background-color: #fff;
-      }
-
-      .product-card img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-      }
-
-      .product-card h3 {
-        margin: 1rem 0 0.5rem;
-        text-align: center;
-      }
-
-      .product-card a {
-        background-color: #f53d2d;
-        color: white;
-        padding: 0.5rem 1rem;
-        text-decoration: none;
-        border-radius: 5px;
-        margin-top: 0.5rem;
-        transition: background-color 0.3s;
-      }
-
-      .product-card a:hover {
-        background-color: #d93224;
-      }
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <header>
@@ -105,212 +13,30 @@
     </header>
 
     <div class="container">
-      <!-- Search box -->
-      <div style="text-align:center; margin-bottom: 1rem;">
-        <input type="text" id="searchInput" placeholder="Cari produk..." style="width: 80%; max-width: 400px; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px;" aria-label="Cari produk" />
+      <!-- Search -->
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari produk..."
+          aria-label="Cari produk"
+        />
       </div>
 
-      <!-- Tabs for categories -->
-      <div class="tabs" role="tablist" aria-label="Kategori Produk">
-        <button class="tab active" role="tab" aria-selected="true" aria-controls="semua" id="tab-semua">Semua</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="rumah-tangga" id="tab-rumah-tangga">Rumah Tangga</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="elektronik" id="tab-elektronik">Elektronik</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="lain-lain" id="tab-lain-lain">Lain-lain</button>
-      </div>
-
-      <!-- Product lists by category -->
-      <div id="semua" class="product-list" role="tabpanel" aria-labelledby="tab-semua"></div>
-      <div id="rumah-tangga" class="product-list" role="tabpanel" aria-labelledby="tab-rumah-tangga" hidden></div>
-      <div id="elektronik" class="product-list" role="tabpanel" aria-labelledby="tab-elektronik" hidden></div>
-      <div id="lain-lain" class="product-list" role="tabpanel" aria-labelledby="tab-lain-lain" hidden></div>
+      <!-- Product panel -->
+      <div id="product-list" class="product-list" role="region" aria-label="Daftar Produk"></div>
     </div>
 
-    <!-- Modal for product details -->
-    <div id="productModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000;">
-      <div style="background:#fff; padding:1rem; border-radius:8px; max-width:400px; width:90%; position:relative;">
-        <button id="modalClose" aria-label="Tutup detail produk" style="position:absolute; top:0.5rem; right:0.5rem; background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
-        <img id="modalImage" src="" alt="" style="max-width:100%; border-radius:8px; margin-bottom:1rem;" />
+    <!-- Modal -->
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <button id="modalClose" class="modal-close" aria-label="Tutup detail produk">&times;</button>
+        <img id="modalImage" src="" alt="" />
         <h3 id="modalTitle"></h3>
-        <a id="modalLink" href="#" target="_blank" style="display:inline-block; margin-top:1rem; background-color:#f53d2d; color:#fff; padding:0.5rem 1rem; border-radius:5px; text-decoration:none;">Beli Sekarang</a>
+        <a id="modalLink" href="#" target="_blank">Beli Sekarang</a>
       </div>
     </div>
 
-    <script>
-      // Tab switching logic
-      const tabs = document.querySelectorAll('.tab');
-      const panels = document.querySelectorAll('[role="tabpanel"]');
-
-      // Product data
-      const products = [
-        {
-          category: 'rumah-tangga',
-          title: 'Bekal Makan',
-          image: 'images/bekal.jpg',
-          alt: 'Bekal',
-          link: 'https://s.shopee.co.id/2qI5VZfkbG'
-        },
-        {
-          category: 'rumah-tangga',
-          title: 'Botol Minum',
-          image: 'images/botol.jpg',
-          alt: 'Botol',
-          link: 'https://s.shopee.co.id/10qRKGi9rg'
-        },
-        {
-          category: 'elektronik',
-          title: 'Kulkas 1 Pintu',
-          image: 'images/kulkas.jpg', 
-          alt: 'Kulkas',
-          link: 'https://s.shopee.co.id/AUhWdmfZ8k'
-        },
-        {
-          category: 'elektronik',
-          title: 'Router Wifi',
-          image: 'images/router.jpg',
-          alt: 'Router',
-          link: 'https://s.shopee.co.id/2VfF77ZkVE'
-        }
-        // Add more products here as needed
-      ];
-
-      // Function to render products
-      function renderProducts() {
-        const categories = ['semua', 'rumah-tangga', 'elektronik', 'lain-lain'];
-        categories.forEach(category => {
-          const container = document.getElementById(category);
-          container.innerHTML = '';
-          let filteredProducts;
-          if (category === 'semua') {
-            filteredProducts = products;
-          } else {
-            filteredProducts = products.filter(p => p.category === category);
-          }
-          if (filteredProducts.length === 0) {
-            container.innerHTML = '<p>Belum ada produk untuk kategori ini.</p>';
-            return;
-          }
-          filteredProducts.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.innerHTML = `
-              <img src="${product.image}" alt="${product.alt}" />
-              <h3>${product.title}</h3>
-              <a href="${product.link}" target="_blank">Beli Sekarang</a>
-            `;
-            container.appendChild(card);
-          });
-        });
-      }
-
-      renderProducts();
-
-      tabs.forEach((tab) => {
-        tab.addEventListener('click', () => {
-          // Deactivate all tabs and hide all panels
-          tabs.forEach(t => {
-            t.classList.remove('active');
-            t.setAttribute('aria-selected', 'false');
-          });
-          panels.forEach(panel => panel.hidden = true);
-
-          // Activate clicked tab and show corresponding panel
-          tab.classList.add('active');
-          tab.setAttribute('aria-selected', 'true');
-          const panelId = tab.getAttribute('aria-controls');
-          document.getElementById(panelId).hidden = false;
-
-          // Clear search input on tab change
-          document.getElementById('searchInput').value = '';
-          filterProducts('');
-        });
-      });
-
-      // Search filter logic
-      const searchInput = document.getElementById('searchInput');
-      searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        filterProducts(query);
-      });
-
-      function filterProducts(query) {
-        // Get the active panel
-        const activePanel = Array.from(panels).find(panel => !panel.hidden);
-        if (!activePanel) return;
-
-        const products = activePanel.querySelectorAll('.product-card');
-        products.forEach(product => {
-          const title = product.querySelector('h3').textContent.toLowerCase();
-          if (title.includes(query)) {
-            product.style.display = '';
-          } else {
-            product.style.display = 'none';
-          }
-        });
-      }
-
-      // Modal logic
-      const modal = document.getElementById('productModal');
-      const modalImage = document.getElementById('modalImage');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalLink = document.getElementById('modalLink');
-      const modalClose = document.getElementById('modalClose');
-
-      // Add click event to product images
-      function addImageClickListeners() {
-        document.querySelectorAll('.product-card img').forEach(img => {
-          img.style.cursor = 'pointer';
-          img.addEventListener('click', () => {
-            const productCard = img.closest('.product-card');
-            // Adjust image src to local folder path if needed
-            let imgSrc = img.src;
-            if (!imgSrc.startsWith('http') && !imgSrc.startsWith('data:')) {
-              imgSrc = img.getAttribute('src');
-            }
-            modalImage.src = imgSrc;
-            modalImage.alt = img.alt;
-            modalTitle.textContent = productCard.querySelector('h3').textContent;
-            modalLink.href = productCard.querySelector('a').href;
-            modal.style.display = 'flex';
-          });
-        });
-      }
-
-      // Re-add image click listeners after rendering products
-      function refreshProductListeners() {
-        addImageClickListeners();
-      }
-
-      // Modify renderProducts to call refreshProductListeners after rendering
-      function renderProducts() {
-        const categories = ['semua', 'rumah-tangga', 'elektronik', 'lain-lain'];
-        categories.forEach(category => {
-          const container = document.getElementById(category);
-          container.innerHTML = '';
-          let filteredProducts;
-          if (category === 'semua') {
-            filteredProducts = products;
-          } else {
-            filteredProducts = products.filter(p => p.category === category);
-          }
-          if (filteredProducts.length === 0) {
-            container.innerHTML = '<p>Belum ada produk untuk kategori ini.</p>';
-            return;
-          }
-          filteredProducts.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.innerHTML = `
-              <img src="${product.image}" alt="${product.alt}" />
-              <h3>${product.title}</h3>
-              <a href="${product.link}" target="_blank">Beli Sekarang</a>
-            `;
-            container.appendChild(card);
-          });
-        });
-        refreshProductListeners();
-      }
-
-      renderProducts();
-    </script>
+    <script src="js/script.js"></script>
   </body>
 </html>
