@@ -1,93 +1,173 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rekomendasi Produk Shopee</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rekomendasi Produk Shopee</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #fff;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
 
-    header {
-      background-color: #f53d2d;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
+      header {
+        background-color: #f53d2d;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
 
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
+      .container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+      }
 
-    .product-card {
-      border: 1px solid #eee;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
+      /* Tabs styles */
+      .tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #eee;
+      }
 
-    .product-card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
+      .tab {
+        padding: 0.5rem 1.5rem;
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-size: 1rem;
+        color: #666;
+        border-bottom: 3px solid transparent;
+        transition: color 0.3s, border-bottom-color 0.3s;
+      }
 
-    .product-card h3 {
-      margin: 1rem 0 0.5rem;
-      text-align: center;
-    }
+      .tab:hover {
+        color: #f53d2d;
+      }
 
-    .product-card a {
-      background-color: #f53d2d;
-      color: white;
-      padding: 0.5rem 1rem;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 0.5rem;
-    }
+      .tab.active {
+        color: #f53d2d;
+        border-bottom-color: #f53d2d;
+        font-weight: bold;
+      }
 
-    .product-card a:hover {
-      background-color: #d93224;
-    }
-  </style>
-</head>
-<body>
+      .product-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
 
-  <header>
-    <h1>Rekomendasi Produk Shopee Saya</h1>
-    <p>Yuk cek produk terbaik pilihan saya!</p>
-  </header>
+      .product-card {
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        background-color: #fff;
+      }
 
-  <div class="container">
+      .product-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
 
-    <!-- Produk 1 -->
-    <div class="product-card">
-      <img src="https://cf.shopee.co.id/file/75c7f76eae6f850c566f22d0bb40c5c5" alt="Contoh Produk">
-      <h3>Produk Contoh 1</h3>
-      <a href="https://shopee.co.id/produk-affiliate-link" target="_blank">Beli Sekarang</a>
+      .product-card h3 {
+        margin: 1rem 0 0.5rem;
+        text-align: center;
+      }
+
+      .product-card a {
+        background-color: #f53d2d;
+        color: white;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 0.5rem;
+        transition: background-color 0.3s;
+      }
+
+      .product-card a:hover {
+        background-color: #d93224;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Rekomendasi Produk Shopee Saya</h1>
+      <p>Yuk cek produk terbaik pilihan saya!</p>
+    </header>
+
+    <div class="container">
+      <!-- Tabs for categories -->
+      <div class="tabs" role="tablist" aria-label="Kategori Produk">
+        <button class="tab active" role="tab" aria-selected="true" aria-controls="rumah-tangga" id="tab-rumah-tangga">Rumah Tangga</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="elektronik" id="tab-elektronik">Elektronik</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="lain-lain" id="tab-lain-lain">Lain-lain</button>
+      </div>
+
+      <!-- Product lists by category -->
+      <div id="rumah-tangga" class="product-list" role="tabpanel" aria-labelledby="tab-rumah-tangga">
+        <div class="product-card">
+          <img
+            src="https://cf.shopee.co.id/file/75c7f76eae6f850c566f22d0bb40c5c5"
+            alt="Produk Rumah Tangga 1"
+          />
+          <h3>Produk Rumah Tangga 1</h3>
+          <a href="https://shopee.co.id/produk-affiliate-link" target="_blank"
+            >Beli Sekarang</a
+          >
+        </div>
+        <!-- Add more Rumah Tangga products here -->
+      </div>
+
+      <div id="elektronik" class="product-list" role="tabpanel" aria-labelledby="tab-elektronik" hidden>
+        <div class="product-card">
+          <img
+            src="https://cf.shopee.co.id/file/1e5ed7a27b5c28a2ff3fbd6dc0de88d0"
+            alt="Produk Elektronik 1"
+          />
+          <h3>Produk Elektronik 1</h3>
+          <a href="https://shopee.co.id/produk-affiliate-link" target="_blank"
+            >Beli Sekarang</a
+          >
+        </div>
+        <!-- Add more Elektronik products here -->
+      </div>
+
+      <div id="lain-lain" class="product-list" role="tabpanel" aria-labelledby="tab-lain-lain" hidden>
+        <!-- Add Lain-lain products here -->
+        <p>Belum ada produk untuk kategori ini.</p>
+      </div>
     </div>
 
-    <!-- Produk 2 -->
-    <div class="product-card">
-      <img src="https://cf.shopee.co.id/file/1e5ed7a27b5c28a2ff3fbd6dc0de88d0" alt="Contoh Produk 2">
-      <h3>Produk Contoh 2</h3>
-      <a href="https://shopee.co.id/produk-affiliate-link" target="_blank">Beli Sekarang</a>
-    </div>
+    <script>
+      // Tab switching logic
+      const tabs = document.querySelectorAll('.tab');
+      const panels = document.querySelectorAll('[role="tabpanel"]');
 
-    <!-- Tambahkan produk lainnya di sini -->
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          // Deactivate all tabs and hide all panels
+          tabs.forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          panels.forEach(panel => panel.hidden = true);
 
-  </div>
-
-</body>
+          // Activate clicked tab and show corresponding panel
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          const panelId = tab.getAttribute('aria-controls');
+          document.getElementById(panelId).hidden = false;
+        });
+      });
+    </script>
+  </body>
 </html>
