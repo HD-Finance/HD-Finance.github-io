@@ -1,35 +1,17 @@
 const productListContainer = document.getElementById('product-list');
 
-const products = [
-  {
-    category: 'rumah-tangga',
-    title: 'Bekal Makan',
-    image: 'images/bekal.jpg',
-    alt: 'Bekal',
-    link: 'https://s.shopee.co.id/2qI5VZfkbG'
-  },
-  {
-    category: 'rumah-tangga',
-    title: 'Botol Minum',
-    image: 'images/botol.jpg',
-    alt: 'Botol',
-    link: 'https://s.shopee.co.id/10qRKGi9rg'
-  },
-  {
-    category: 'elektronik',
-    title: 'Kulkas 1 Pintu',
-    image: 'images/kulkas.jpg',
-    alt: 'Kulkas',
-    link: 'https://s.shopee.co.id/AUhWdmfZ8k'
-  },
-  {
-    category: 'elektronik',
-    title: 'Router Wifi',
-    image: 'images/router.jpg',
-    alt: 'Router',
-    link: 'https://s.shopee.co.id/2VfF77ZkVE'
+// Fetch products from external JSON file in js folder and render them
+let products = [];
+
+async function fetchProducts() {
+  try {
+    const response = await fetch('js/products.json');
+    products = await response.json();
+    renderProducts();
+  } catch (error) {
+    console.error('Error fetching products:', error);
   }
-];
+}
 
 // Helper function to create a product card element
 function createProductCard(product) {
@@ -119,4 +101,4 @@ modal.addEventListener('click', e => {
   if (e.target === modal) modal.style.display = 'none';
 });
 
-renderProducts();
+fetchProducts();
